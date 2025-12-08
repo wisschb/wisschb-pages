@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio — Wisschb</title>
+
+  <style>
+    :root {
+      --bg: #e5e5e5;
+      --text: #0a0a0a;
+      --panel: rgba(0,0,0,0.06);
+      --muted: #444;
+    }
+
+    body.dark {
+      --bg: #070A0E;
+      --text: #F1F5FF;
+      --panel: rgba(255,255,255,0.08);
+      --muted: #98A2B3;
+    }
+
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui, sans-serif;
+      transition: background .6s, color .6s;
+    }
+
+    /* ---------------- TOP BAR ---------------- */
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 20px 50px;
+      background:rgba(255,255,255,.5);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:50;
+      color:black;
+    }
+    body.dark .topbar{
+      background:rgba(0,0,0,.3);
+      color:white;
+    }
+
+    /* Animation Docker */
+    .docker-animation {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      margin: 0 20px;
+    }
+
+    .docker-animation img {
+      width: 100%;
+      animation: drop 2s infinite linear;
+      position: absolute;
+      top: -50px;
+    }
+
+    @keyframes drop {
+      0% { top: -50px; opacity: 0; transform: scale(0.5);}
+      50% { opacity: 1; }
+      100% { top: 0px; opacity: 1; transform: scale(1);}
+    }
+
+    /* ------------ MENU ⋯ ---------------- */
+    .menu-btn{
+      font-size:26px;
+      background:none;
+      border:none;
+      color:var(--text);
+      cursor:pointer;
+      padding:4px 10px;
+    }
+
+    .dropdown{
+      position:absolute;
+      right:20px;
+      top:60px;
+      background:var(--panel);
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.2);
+      padding:8px 0;
+      width:170px;
+      display:none;
+      z-index:100;
+    }
+
+    .dropdown a{
+      display:block;
+      padding:10px 14px;
+      text-decoration:none;
+      color:var(--text);
+      border-radius:6px;
+      font-size:15px;
+    }
+
+    .dropdown a:hover{
+      background:rgba(0,0,0,.15);
+    }
+
+    /* ---------------- LAMPE ---------------- */
+    #lamp-container {
+      position: absolute;
+      top: 70px;
+      left: 40px;
+      width: 80px;
+      user-select:none;
+      cursor:pointer;
+      z-index:20;
+    }
+
+    #lamp-line {
+      width: 3px;
+      height: 90px;
+      background: #777;
+      margin: 0 auto;
+      pointer-events:none;
+      transition: background .4s;
+    }
+
+    #lamp-bulb {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50%;
+      margin: 0 auto;
+      margin-top: -2px;
+      pointer-events:none;
+      transition: background .4s, box-shadow .4s;
+    }
+
+    body.dark #lamp-bulb {
+      background: #ffdf6e;
+      box-shadow: 0 0 25px #ffdf6e, 0 0 60px #ffefb3;
+    }
+
+    body.dark #lamp-line {
+      background: #ddd;
+    }
+
+    /* ---------------- HERO ---------------- */
+    .hero{
+      padding:160px 20px 10px;
+      max-width:1120px;
+      margin:auto;
+      text-align:center;
+    }
+
+    .title{ font-size:32px; margin-bottom:6px; }
+    .subtitle{ color:var(--muted); }
+
+    /* ---------------- PROJETS ---------------- */
+    .section{
+      max-width:1120px;
+      margin:auto;
+      padding:18px 20px 30px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid rgba(0,0,0,.15);
+      border-radius:14px;
+      transition:0.3s;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      height:120px;
+      font-size:18px;
+      font-weight:bold;
+      gap:10px;
+    }
+
+    body.dark .card{
+      border-color:rgba(255,255,255,.14);
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      background:rgba(0,0,0,.12);
+    }
+
+    .github-icon{
+      width:22px;
+      vertical-align: middle;
+    }
+
+    .profile-icon {
+      width:28px;
+      vertical-align: middle;
+    }
+
+    body.dark .github-icon,
+    body.dark .profile-icon { filter:invert(1); }
+
+    footer{
+      text-align:center;
+      padding:20px;
+      color:var(--muted);
+      margin-top:40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LAMPE -->
+<div id="lamp-container" onclick="toggleTheme()">
+  <div id="lamp-line"></div>
+  <div id="lamp-bulb"></div>
+</div>
+
+<header class="topbar">
+  <h2 style="margin:0;">Wisschb</h2>
+
+  <!-- Animation Docker UNIQUEMENT -->
+  <div class="docker-animation">
+    <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker">
+  </div>
+
+  <!-- MENU 3 POINTS -->
+  <button class="menu-btn" onclick="toggleMenu()">⋯</button>
+  <div id="dropdown" class="dropdown">
+    <a href="https://github.com/wisschb" target="_blank">Mon Profil</a>
+    <a href="https://github.com/wisschb?tab=repositories" target="_blank">Projects</a>
+    <a href="https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/" target="_blank">Microsoft Learn</a>
+  </div>
+</header>
+
+<main class="hero">
+  <h2 class="title">Mes projets GitHub</h2>
+  <p class="subtitle">
+    Voici une sélection de mes projets GitHub, que je développe au fil du temps.
+  </p>
+</main>
+
+<section class="section">
+  <div class="grid">
+
+    <!-- GITHUB -->
+    <div class="card" style="grid-column: span 12; text-align:center;"
+         onclick="go('https://github.com/wisschb')">
+      <h3>
+        Accéder directement à mon GitHub
+        <img class="github-icon" src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
+      </h3>
+    </div>
+
+    <!-- Microsoft Learn -->
+    <div class="card" style="grid-column: span 6;"
+         onclick="go('https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/')">
+      <img class="profile-icon" src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="Microsoft Logo">
+      Microsoft Learn
+    </div>
+
+    <!-- TryHackMe -->
+    <div class="card" style="grid-column: span 6;"
+         onclick="go('https://tryhackme.com/p/wisschb')">
+      <img class="profile-icon" src="https://tryhackme.com/favicon.ico" alt="TryHackMe Logo">
+      TryHackMe
+    </div>
+
+  </div>
+</section>
+
+<footer>© Wisschb — Tous droits réservés.</footer>
+
+<script>
+  function go(u){ window.open(u, "_blank"); }
+
+  function toggleTheme(){
+    document.body.classList.toggle("dark");
+  }
+
+  function toggleMenu(){
+    const m = document.getElementById("dropdown");
+    m.style.display = (m.style.display === "block") ? "none" : "block";
+  }
+
+  window.onclick = (e)=>{
+    if(!e.target.matches(".menu-btn")){
+      document.getElementById("dropdown").style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>
