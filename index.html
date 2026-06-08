@@ -1,327 +1,641 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portfolio — Wisschb</title>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Wissem Chaibi</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{
---bg:#e5e5e5;
---text:#0a0a0a;
---panel:rgba(0,0,0,0.06);
---muted:#444;
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+[data-theme="light"]{
+  --bg:#f9fafb;--bg2:#f3f4f6;--card:#ffffff;
+  --text:#111827;--sub:#6b7280;--faint:#9ca3af;
+  --border:#e5e7eb;--border2:#d1d5db;
+  --acc:#0d9488;--acc2:#0f766e;
+  --acc-soft:#f0fdfb;--acc-bd:#99f6e4;
+  --wave:rgba(13,148,136,0.08);
+  --wave2:rgba(13,148,136,0.04);
+}
+[data-theme="dark"]{
+  --bg:#0d1117;--bg2:#161b22;--card:#1c2128;
+  --text:#e6edf3;--sub:#7d8590;--faint:#484f58;
+  --border:#30363d;--border2:#21262d;
+  --acc:#2dd4bf;--acc2:#14b8a6;
+  --acc-soft:rgba(45,212,191,.08);--acc-bd:rgba(45,212,191,.25);
+  --wave:rgba(45,212,191,0.06);
+  --wave2:rgba(45,212,191,0.03);
 }
 
-body.dark{
---bg:#070A0E;
---text:#F1F5FF;
---panel:rgba(255,255,255,0.08);
---muted:#98A2B3;
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;transition:background .35s,color .35s}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--acc)}
+
+/* ══════════════════════════════
+   TOGGLE PILL — LAMPE CORDON (style A) avec icônes (style B)
+   Fixé en haut à gauche, sous la nav
+══════════════════════════════ */
+.lamp-wrap{
+  position:fixed;top:0;left:40px;z-index:200;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;user-select:none;
+}
+.lamp-cord{
+  width:1.5px;height:52px;
+  background:linear-gradient(to bottom,transparent,var(--border2));
+  transition:background .35s;
+}
+.lamp-head{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 20px 20px;
+  padding:8px 10px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  transition:all .35s;
+}
+[data-theme="dark"] .lamp-head{
+  box-shadow:0 4px 24px rgba(45,212,191,.12);
+}
+.lamp-head:hover{transform:translateY(4px)}
+.lamp-sun,.lamp-moon{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .35s;
+}
+.lamp-sun{background:transparent}
+.lamp-moon{background:transparent}
+[data-theme="light"] .lamp-sun{background:var(--acc);box-shadow:0 0 10px rgba(13,148,136,.4)}
+[data-theme="dark"] .lamp-moon{background:var(--acc);box-shadow:0 0 14px rgba(45,212,191,.5)}
+[data-theme="dark"] .lamp-head svg.moon-icon path{stroke:white}
+.lamp-head svg{width:14px;height:14px;stroke:var(--faint);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s}
+[data-theme="light"] .lamp-sun svg{stroke:white}
+.bulb-glow{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--faint);
+  transition:all .35s;
+  margin-top:2px;
+}
+[data-theme="dark"] .bulb-glow{
+  background:#fde68a;
+  box-shadow:0 0 10px #fde68a,0 0 20px rgba(253,230,138,.4);
 }
 
-body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:system-ui,sans-serif;
-transition:background .6s,color .6s;
+/* ══════════════════════════════ NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:99;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 56px 0 100px;height:60px;
+  background:rgba(249,250,251,.94);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:background .35s,border-color .35s;
+}
+[data-theme="dark"] nav{background:rgba(13,17,23,.92)}
+.logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-decoration:none;transition:color .35s}
+.logo span{color:var(--acc)}
+nav ul{display:flex;gap:32px;list-style:none}
+nav a{font-size:12px;letter-spacing:.3px;color:var(--sub);text-decoration:none;transition:color .2s}
+nav a:hover{color:var(--acc)}
+.nav-gh{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;
+  background:var(--text);color:var(--bg);
+  padding:8px 20px;border-radius:6px;
+  text-decoration:none;transition:all .3s;
+}
+.nav-gh:hover{background:var(--acc);color:white}
+.nav-gh svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+
+/* ══════════════════════════════
+   ANIMATION SCIENTIFIQUE — Canvas entre nav et hero
+══════════════════════════════ */
+.science-bar{
+  position:relative;
+  height:100px;
+  overflow:hidden;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  transition:background .35s,border-color .35s;
+  margin-top:60px;/* compense la nav fixe */
+}
+#sciCanvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
 }
 
-/* PARTICLES BACKGROUND */
-#particles-js{
-position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
-z-index:-1;
-}
-
-/* TOP BAR */
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px 20px 50px;
-background:rgba(255,255,255,.5);
-backdrop-filter:blur(10px);
-position:sticky;
-top:0;
-z-index:50;
-color:black;
-}
-
-body.dark .topbar{
-background:rgba(0,0,0,.3);
-color:white;
-}
-
-/* MENU */
-.menu-btn{
-font-size:26px;
-background:none;
-border:none;
-color:var(--text);
-cursor:pointer;
-padding:4px 10px;
-}
-
-.dropdown{
-position:absolute;
-right:20px;
-top:60px;
-background:var(--panel);
-border-radius:10px;
-border:1px solid rgba(0,0,0,.2);
-padding:8px 0;
-width:170px;
-display:none;
-z-index:100;
-}
-
-.dropdown a{
-display:block;
-padding:10px 14px;
-text-decoration:none;
-color:var(--text);
-border-radius:6px;
-font-size:15px;
-}
-
-.dropdown a:hover{
-background:rgba(0,0,0,.15);
-}
-
-/* LAMPE */
-#lamp-container{
-position:absolute;
-top:70px;
-left:40px;
-width:80px;
-cursor:pointer;
-z-index:20;
-}
-
-#lamp-line{
-width:3px;
-height:90px;
-background:#777;
-margin:auto;
-transition:background .4s;
-}
-
-#lamp-bulb{
-width:50px;
-height:50px;
-background:white;
-border-radius:50%;
-margin:auto;
-margin-top:-2px;
-transition:background .4s,box-shadow .4s;
-}
-
-body.dark #lamp-bulb{
-background:#ffdf6e;
-box-shadow:0 0 25px #ffdf6e,0 0 60px #ffefb3;
-}
-
-body.dark #lamp-line{
-background:#ddd;
-}
-
-/* HERO */
+/* ══════════════════════════════ HERO */
 .hero{
-padding:160px 20px 10px;
-max-width:1120px;
-margin:auto;
-text-align:center;
+  min-height:calc(100vh - 160px);
+  padding:64px 56px 60px;
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+  transition:border-color .35s;
+}
+.hero-shape{
+  position:absolute;top:0;right:0;width:44%;height:100%;
+  background:var(--bg2);
+  clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);
+  transition:background .35s;pointer-events:none;
+}
+.hero-inner{
+  max-width:1120px;margin:auto;width:100%;
+  display:grid;grid-template-columns:1.1fr 1fr;gap:56px;
+  align-items:center;position:relative;z-index:1;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--acc-soft);border:1px solid var(--acc-bd);
+  border-radius:100px;padding:5px 16px;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--acc);font-weight:500;margin-bottom:24px;
+  transition:background .35s,border-color .35s,color .35s;
+}
+.bdot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(48px,5.5vw,82px);font-weight:800;
+  line-height:.95;letter-spacing:-2.5px;margin-bottom:20px;
+  opacity:0;animation:up .7s ease forwards;
+}
+h1 em{color:var(--acc);font-style:normal}
+.hero-btns{display:flex;gap:12px;opacity:0;animation:up .7s .18s ease forwards;margin-top:32px}
+.btn-fill{background:var(--acc);color:white;padding:12px 28px;border-radius:7px;font-size:13px;font-weight:500;text-decoration:none;transition:all .2s}
+.btn-fill:hover{background:var(--acc2);transform:translateY(-1px)}
+.btn-out{color:var(--sub);border:1px solid var(--border);padding:12px 28px;border-radius:7px;font-size:13px;text-decoration:none;transition:all .2s}
+.btn-out:hover{border-color:var(--acc);color:var(--acc)}
+
+/* INFO CARD */
+.info-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+  opacity:0;animation:up .7s .3s ease forwards;
+  transition:background .35s,border-color .35s,box-shadow .35s;
+}
+.ic-r{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 20px;border-bottom:1px solid var(--border2);
+  transition:border-color .35s;
+}
+.ic-r:last-child{border:none}
+.ic-k{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);transition:color .35s}
+.ic-v{font-size:12px;font-weight:600;color:var(--acc)}
+
+/* ══════════════════════════════ SECTIONS */
+section{padding:96px 56px;border-top:1px solid var(--border);transition:border-color .35s}
+.wrap{max-width:1120px;margin:auto}
+.sh{display:flex;align-items:center;gap:16px;margin-bottom:52px}
+.sh-n{font-size:10px;letter-spacing:3px;color:var(--faint)}
+.shl{flex:1;height:1px;background:var(--border);transition:background .35s}
+.sh-t{font-family:'Syne',sans-serif;font-size:clamp(22px,2.5vw,34px);font-weight:800;letter-spacing:-.5px}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.rv.in{opacity:1;transform:none}
+
+/* ══════════════════════════════ SKILLS */
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.sk-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:22px 24px;
+  transition:border-color .25s,background .35s;
+}
+.sk-card:hover{border-color:var(--acc-bd)}
+.sk-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sk-ico{
+  width:32px;height:32px;border-radius:7px;
+  background:var(--acc-soft);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .35s;
+}
+.sk-ico svg{width:17px;height:17px;stroke:var(--acc);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s}
+.sk-nm{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.sk-pills{display:flex;flex-wrap:wrap;gap:6px}
+.sp{
+  font-size:11px;padding:4px 10px;
+  background:var(--acc-soft);border:1px solid var(--acc-bd);
+  border-radius:5px;color:var(--acc);
+  transition:background .35s,border-color .35s,color .35s;
 }
 
-.title{font-size:32px;margin-bottom:6px;}
-.subtitle{color:var(--muted);}
-
-/* PROJETS */
-.section{
-max-width:1120px;
-margin:auto;
-padding:18px 20px 30px;
+/* ══════════════════════════════ FORMATIONS */
+.f-list{display:flex;flex-direction:column}
+.f-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0;border-bottom:1px solid var(--border);
+  text-decoration:none;color:var(--text);transition:all .2s;
 }
-
-.grid{
-display:grid;
-grid-template-columns:repeat(12,1fr);
-gap:14px;
+.f-row:hover{padding-left:12px}
+.f-row:hover .fa{color:var(--acc);transform:translate(3px,-3px)}
+.f-l{display:flex;align-items:center;gap:20px}
+.f-n{font-size:10px;color:var(--faint);width:24px;transition:color .35s}
+.plat{
+  width:90px;display:flex;align-items:center;flex-shrink:0;
+  opacity:.85;transition:opacity .2s;
 }
-
-.card{
-background:var(--panel);
-border:1px solid rgba(0,0,0,.15);
-border-radius:14px;
-transition:.3s;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-height:120px;
-font-size:18px;
-font-weight:bold;
-gap:10px;
+.f-row:hover .plat{opacity:1}
+.plat img{height:18px;width:auto;max-width:88px;object-fit:contain}
+.f-title{font-size:15px;font-weight:400;color:var(--text);transition:color .35s}
+.f-r2{display:flex;align-items:center;gap:14px}
+.f-tags{display:flex;gap:6px}
+.ftg{
+  font-size:10px;padding:3px 10px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:100px;color:var(--faint);
+  transition:background .35s,border-color .35s,color .35s;
 }
+.fa{font-size:16px;color:var(--faint);transition:all .2s}
 
-body.dark .card{
-border-color:rgba(255,255,255,.14);
+/* ══════════════════════════════ PROFILS */
+.p-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.p-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:24px 18px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  text-decoration:none;color:var(--text);
+  transition:all .3s;
 }
+.p-card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 4px 20px rgba(13,148,136,.1)}
+.p-logo{height:30px;display:flex;align-items:center}
+.p-logo img{height:30px;width:auto;max-width:100px;object-fit:contain}
+.p-nm{font-family:'Syne',sans-serif;font-size:13px;font-weight:700}
+.p-hn{font-size:11px;color:var(--faint);transition:color .35s}
+.p-lk{font-size:11px;color:var(--faint);transition:color .2s}
+.p-card:hover .p-lk{color:var(--acc)}
 
-.card:hover{
-transform:translateY(-4px);
-background:rgba(0,0,0,.12);
-}
-
-.github-icon{
-width:22px;
-}
-
-.profile-icon{
-width:28px;
-}
-
-body.dark .github-icon,
-body.dark .profile-icon{
-filter:invert(1);
-}
-
+/* ══════════════════════════════ FOOTER */
 footer{
-text-align:center;
-padding:20px;
-color:var(--muted);
-margin-top:40px;
+  padding:32px 56px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--card);transition:background .35s,border-color .35s;
+}
+.fl{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--sub)}
+.fl span{color:var(--acc)}
+.fr{font-size:11px;color:var(--faint)}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:768px){
+  nav{padding:0 20px 0 80px}nav ul,.nav-gh{display:none}
+  .science-bar{height:64px}
+  .hero{padding:32px 20px 48px;min-height:auto}
+  .hero-inner{grid-template-columns:1fr;gap:32px}
+  .info-card,.hero-shape{display:none}
+  section{padding:60px 20px}
+  .p-grid{grid-template-columns:repeat(2,1fr)}
+  footer{flex-direction:column;gap:8px;padding:24px 20px;text-align:center}
 }
 </style>
 </head>
-
 <body>
 
-<div id="particles-js"></div>
-
-<!-- LAMPE -->
-<div id="lamp-container" onclick="toggleTheme()">
-<div id="lamp-line"></div>
-<div id="lamp-bulb"></div>
+<!-- ══ LAMPE CORDON + TOGGLE ICÔNES ══ -->
+<div class="lamp-wrap" onclick="toggleTheme()" title="Changer le thème">
+  <div class="lamp-cord"></div>
+  <div class="lamp-head">
+    <div class="lamp-sun">
+      <!-- soleil -->
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </div>
+    <div class="lamp-moon">
+      <!-- lune -->
+      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="bulb-glow"></div>
+  </div>
 </div>
 
-<header class="topbar">
-<h2 style="margin:0;">Wisschb</h2>
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="logo" href="#">Wissem <span>Chaibi</span></a>
+  <ul>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#courses">Formations</a></li>
+    <li><a href="#profiles">Profils</a></li>
+  </ul>
+  <a href="https://github.com/wisschb" target="_blank" class="nav-gh">
+    <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    GitHub
+  </a>
+</nav>
 
-<button class="menu-btn" onclick="toggleMenu()">⋯</button>
-
-<div id="dropdown" class="dropdown">
-<a href="https://github.com/wisschb" target="_blank">Mon Profil</a>
-<a href="https://github.com/wisschb?tab=repositories" target="_blank">Projects</a>
-<a href="https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/" target="_blank">Microsoft Learn</a>
-</div>
-</header>
-
-<main class="hero">
-<h2 class="title">Mes projets GitHub</h2>
-<p class="subtitle"></p>
-</main>
-
-<section class="section">
-<div class="grid">
-
-<div class="card" style="grid-column: span 12;"
-onclick="go('https://github.com/wisschb')">
-
-<h3>
-Accéder directement à mon GitHub
-<img class="github-icon"
-src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
-</h3>
-
+<!-- ══ ANIMATION SCIENTIFIQUE ══ -->
+<div class="science-bar">
+  <canvas id="sciCanvas"></canvas>
 </div>
 
-<div class="card" style="grid-column: span 6;"
-onclick="go('https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/')">
-
-<img class="profile-icon"
-src="https://cdn-icons-png.flaticon.com/512/732/732221.png">
-Microsoft Learn
-
-</div>
-
-<div class="card" style="grid-column: span 6;"
-onclick="go('https://tryhackme.com/p/wisschb')">
-
-<img class="profile-icon"
-src="https://tryhackme.com/favicon.ico">
-TryHackMe
-
-</div>
-
-</div>
+<!-- ══ HERO ══ -->
+<section class="hero" id="home" style="border:none;margin-top:0">
+  <div class="hero-shape"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="badge"><span class="bdot"></span> </div>
+      <h1>Wissem<br><em>Chaibi</em></h1>
+      <div class="hero-btns">
+        <a href="#courses" class="btn-fill">Mes formations</a>
+        <a href="#profiles" class="btn-out">Profils en ligne</a>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="ic-r"><span class="ic-k">Spécialité</span><span class="ic-v">Réseaux &amp; Systèmes</span></div>
+      <div class="ic-r"><span class="ic-k">Formation en ligne</span><span class="ic-v">cours</span></div>
+      <div class="ic-r"><span class="ic-k">GitHub</span><span class="ic-v">@wisschb</span></div>
+    </div>
+  </div>
 </section>
 
-<footer>© Wisschb — Tous droits réservés.</footer>
+<!-- ══ COMPÉTENCES ══ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sh rv"><span class="sh-n">01</span><div class="shl"></div><h2 class="sh-t">Compétences</h2></div>
+    <div class="sk-grid rv">
 
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+      <div class="sk-card">
+        <div class="sk-head">
+          <div class="sk-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/></svg></div>
+          <span class="sk-nm">Réseaux &amp; Protocoles</span>
+        </div>
+        <div class="sk-pills"><span class="sp">TCP/IP</span><span class="sp">IPv4</span><span class="sp">Routage</span><span class="sp">Sous-réseaux</span><span class="sp">SMB</span><span class="sp">NAS</span></div>
+      </div>
+
+      <div class="sk-card">
+        <div class="sk-head">
+          <div class="sk-ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <span class="sk-nm">Linux &amp; Systèmes</span>
+        </div>
+        <div class="sk-pills"><span class="sp">Linux</span><span class="sp">Bash</span><span class="sp">Serveur fichiers</span></div>
+      </div>
+
+      <div class="sk-card">
+        <div class="sk-head">
+          <div class="sk-ico"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+          <span class="sk-nm">PowerShell</span>
+        </div>
+        <div class="sk-pills"><span class="sp">Administration Windows</span><span class="sp">Commandes Powershell</span></div>
+      </div>
+
+      <div class="sk-card">
+        <div class="sk-head">
+          <div class="sk-ico">
+            <!-- Microsoft 365 icon inline -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="9" height="9" rx="1" fill="#f25022"/>
+              <rect x="13" y="2" width="9" height="9" rx="1" fill="#7fba00"/>
+              <rect x="2" y="13" width="9" height="9" rx="1" fill="#00a4ef"/>
+              <rect x="13" y="13" width="9" height="9" rx="1" fill="#ffb900"/>
+            </svg>
+          </div>
+          <span class="sk-nm">Microsoft 365</span>
+        </div>
+        <div class="sk-pills"><span class="sp">Azure</span><span class="sp">OneDrive</span></div>
+      </div>
+
+      <div class="sk-card">
+        <div class="sk-head">
+          <div class="sk-ico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <span class="sk-nm">HTML / CSS</span>
+        </div>
+        <div class="sk-pills"><span class="sp">HTML</span><span class="sp">CSS</span><span class="sp">Git</span><span class="sp">GitHub</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ FORMATIONS ══ -->
+<section id="courses">
+  <div class="wrap">
+    <div class="sh rv"><span class="sh-n">02</span><div class="shl"></div><h2 class="sh-t">Formations</h2></div>
+    <div class="f-list rv">
+
+      <a href="https://openclassrooms.com/fr/courses/7170491-initiez-vous-a-linux" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">01</span>
+          <div class="plat"><img alt="OpenClassrooms" style="display:none"/><span style="display:inline-flex"><svg viewBox="0 0 44 44" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#7c5cbf"/><defs><mask id="ocfm"><rect width="44" height="44" fill="white"/><circle cx="22" cy="22" r="9" fill="black"/><rect x="0" y="0" width="19" height="19" fill="black"/></mask></defs><circle cx="22" cy="22" r="19" fill="white" mask="url(#ocfm)"/></svg></span><img hidden/></div>
+          <span class="f-title">Initiez-vous à Linux</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">Linux</span><span class="ftg">Bash</span></div><span class="fa">↗</span></div>
+      </a>
+
+      <a href="https://openclassrooms.com/fr/courses/2356316-montez-un-serveur-de-fichiers-sous-linux" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">02</span>
+          <div class="plat"><img alt="OpenClassrooms" style="display:none"/><span style="display:inline-flex"><svg viewBox="0 0 44 44" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#7c5cbf"/><defs><mask id="ocfm"><rect width="44" height="44" fill="white"/><circle cx="22" cy="22" r="9" fill="black"/><rect x="0" y="0" width="19" height="19" fill="black"/></mask></defs><circle cx="22" cy="22" r="19" fill="white" mask="url(#ocfm)"/></svg></span><img hidden/></div>
+          <span class="f-title">Serveur de fichiers sous Linux</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">NAS</span><span class="ftg">SMB</span></div><span class="fa">↗</span></div>
+      </a>
+
+      <a href="https://openclassrooms.com/fr/courses/6944606-concevez-votre-reseau-tcp-ip" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">03</span>
+          <div class="plat"><img alt="OpenClassrooms" style="display:none"/><span style="display:inline-flex"><svg viewBox="0 0 44 44" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#7c5cbf"/><defs><mask id="ocfm"><rect width="44" height="44" fill="white"/><circle cx="22" cy="22" r="9" fill="black"/><rect x="0" y="0" width="19" height="19" fill="black"/></mask></defs><circle cx="22" cy="22" r="19" fill="white" mask="url(#ocfm)"/></svg></span><img hidden/></div>
+          <span class="f-title">Concevez votre réseau TCP/IP</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">TCP/IP</span><span class="ftg">IPv4</span></div><span class="fa">↗</span></div>
+      </a>
+
+      <a href="https://openclassrooms.com/fr/courses/6573181-adoptez-les-api-rest-pour-vos-projets-web" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">04</span>
+          <div class="plat"><img alt="OpenClassrooms" style="display:none"/><span style="display:inline-flex"><svg viewBox="0 0 44 44" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="6" fill="#7c5cbf"/><defs><mask id="ocfm"><rect width="44" height="44" fill="white"/><circle cx="22" cy="22" r="9" fill="black"/><rect x="0" y="0" width="19" height="19" fill="black"/></mask></defs><circle cx="22" cy="22" r="19" fill="white" mask="url(#ocfm)"/></svg></span><img hidden/></div>
+          <span class="f-title">Adoptez les API REST</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">API</span><span class="ftg">HTTP</span></div><span class="fa">↗</span></div>
+      </a>
+
+      <a href="https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">05</span>
+          <div class="plat">
+            <svg width="60" height="18" viewBox="0 0 60 18" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="1" width="7" height="7" fill="#f25022"/><rect x="9" y="1" width="7" height="7" fill="#7fba00"/>
+              <rect x="0" y="10" width="7" height="7" fill="#00a4ef"/><rect x="9" y="10" width="7" height="7" fill="#ffb900"/>
+              <text x="20" y="13" font-size="9" font-weight="600" fill="currentColor" font-family="Inter,sans-serif">Microsoft Learn</text>
+            </svg>
+          </div>
+          <span class="f-title">PowerShell &amp; Administration Windows</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">PowerShell</span></div><span class="fa">↗</span></div>
+      </a>
+
+      <a href="https://www.udemy.com" target="_blank" class="f-row">
+        <div class="f-l"><span class="f-n">06</span>
+          <div class="plat"><img src="https://cdn.simpleicons.org/udemy/a435f0" alt="Udemy" onerror="this.src='';this.parentNode.innerHTML='<span style=\'font-size:10px;font-weight:700;color:#a435f0;letter-spacing:1px\'>UDEMY</span>'"/></div>
+          <span class="f-title">PowerShell — Scripting complet</span>
+        </div>
+        <div class="f-r2"><div class="f-tags"><span class="ftg">PowerShell</span></div><span class="fa">↗</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROFILS ══ -->
+<section id="profiles">
+  <div class="wrap">
+    <div class="sh rv"><span class="sh-n">03</span><div class="shl"></div><h2 class="sh-t">Profils en ligne</h2></div>
+    <div class="p-grid rv">
+
+      <a href="https://github.com/wisschb" target="_blank" class="p-card">
+        <div class="p-logo">
+          <svg viewBox="0 0 24 24" height="30" xmlns="http://www.w3.org/2000/svg" style="fill:currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </div>
+        <div class="p-nm">GitHub</div>
+        <div class="p-hn">@wisschb</div>
+        <div class="p-lk">Voir ↗</div>
+      </a>
+
+      <a href="https://openclassrooms.com" target="_blank" class="p-card">
+        <div class="p-logo">
+          <svg viewBox="0 0 44 44" height="32" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="8" fill="#7c5cbf"/><defs><mask id="ocmask"><rect width="44" height="44" fill="white"/><circle cx="22" cy="22" r="9" fill="black"/><rect x="0" y="0" width="19" height="19" fill="black"/></mask></defs><circle cx="22" cy="22" r="19" fill="white" mask="url(#ocmask)"/></svg>
+        </div>
+        <div class="p-nm">OpenClassrooms</div>
+        <div class="p-hn">Mon profil</div>
+        <div class="p-lk">Voir ↗</div>
+      </a>
+
+      <a href="https://learn.microsoft.com/fr-fr/users/wissemchaibi-7394/" target="_blank" class="p-card">
+        <div class="p-logo">
+          <svg viewBox="0 0 48 48" height="28" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" fill="#f25022"/>
+            <rect x="26" y="2" width="20" height="20" fill="#7fba00"/>
+            <rect x="2" y="26" width="20" height="20" fill="#00a4ef"/>
+            <rect x="26" y="26" width="20" height="20" fill="#ffb900"/>
+          </svg>
+        </div>
+        <div class="p-nm">Microsoft Learn</div>
+        <div class="p-hn">WissemChaibi-7394</div>
+        <div class="p-lk">Voir ↗</div>
+      </a>
+
+      <a href="https://www.udemy.com" target="_blank" class="p-card">
+        <div class="p-logo">
+          <img src="https://cdn.simpleicons.org/udemy/a435f0" alt="Udemy" height="30" style="height:30px;width:auto" onerror="this.outerHTML='<span style=\'font-size:14px;font-weight:800;color:#a435f0\'>U</span>'"/>
+        </div>
+        <div class="p-nm">Udemy</div>
+        <div class="p-hn">Mon profil</div>
+        <div class="p-lk">Voir ↗</div>
+      </a>
+
+      <a href="https://tryhackme.com/p/wisschb" target="_blank" class="p-card">
+        <div class="p-logo">
+          <img src="https://cdn.simpleicons.org/tryhackme/212c42" alt="TryHackMe" height="30" style="height:30px;width:auto" onerror="this.outerHTML='<svg viewBox=&quot;0 0 48 48&quot; height=&quot;28&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><rect width=&quot;48&quot; height=&quot;48&quot; rx=&quot;8&quot; fill=&quot;#1c2538&quot;/><text x=&quot;24&quot; y=&quot;29&quot; text-anchor=&quot;middle&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#88cc14&quot; font-family=&quot;Arial&quot;>THM</text></svg>'"/>
+        </div>
+        <div class="p-nm">TryHackMe</div>
+        <div class="p-hn">@wisschb</div>
+        <div class="p-lk">Voir ↗</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="fl">Wissem <span>Chaibi</span></span>
+  <span class="fr">© Wissem Chaibi — Tous droits réservés</span>
+</footer>
 
 <script>
-
-function go(u){
-window.open(u,"_blank");
-}
-
+/* ── THEME ── */
 function toggleTheme(){
-document.body.classList.toggle("dark");
+  const h=document.documentElement;
+  const next=h.getAttribute('data-theme')==='dark'?'light':'dark';
+  h.setAttribute('data-theme',next);
+  localStorage.setItem('theme',next);
 }
+const saved=localStorage.getItem('theme');
+if(saved) document.documentElement.setAttribute('data-theme',saved);
 
-function toggleMenu(){
-const m=document.getElementById("dropdown");
-m.style.display=(m.style.display==="block")?"none":"block";
-}
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-window.onclick=(e)=>{
-if(!e.target.matches(".menu-btn")){
-document.getElementById("dropdown").style.display="none";
-}
-};
+/* ── ANIMATION SCIENTIFIQUE ── */
+(function(){
+  const canvas=document.getElementById('sciCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts,anim;
 
-particlesJS("particles-js",{
-particles:{
-number:{value:80},
-color:{value:"#888"},
-shape:{type:"circle"},
-opacity:{value:0.5},
-size:{value:3},
-line_linked:{
-enable:true,
-distance:150,
-color:"#888",
-opacity:0.4,
-width:1
-},
-move:{
-enable:true,
-speed:1.5
-}
-},
-interactivity:{
-events:{
-onhover:{enable:true,mode:"grab"}
-},
-modes:{
-grab:{
-distance:140,
-line_linked:{opacity:1}
-}
-}
-},
-retina_detect:true
-});
+  function resize(){
+    W=canvas.width=canvas.offsetWidth;
+    H=canvas.height=canvas.offsetHeight;
+    buildPts();
+  }
 
+  function buildPts(){
+    pts=[];
+    const N=Math.floor(W/80)+2;
+    for(let i=0;i<N;i++){
+      pts.push({
+        x:i*(W/(N-1)),
+        y:H/2,
+        vy:(Math.random()-.5)*0.4,
+        amp:10+Math.random()*18,
+        freq:0.008+Math.random()*0.012,
+        phase:Math.random()*Math.PI*2,
+        t:Math.random()*100
+      });
+    }
+  }
+
+  function getColor(){
+    return document.documentElement.getAttribute('data-theme')==='dark'
+      ?'rgba(45,212,191,':'rgba(13,148,136,';
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    if(!pts||pts.length<2)return;
+
+    pts.forEach(p=>{p.t+=0.5;p.y=H/2+Math.sin(p.t*p.freq*100)*p.amp});
+
+    // ligne principale
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y);
+    for(let i=1;i<pts.length-1;i++){
+      const mx=(pts[i].x+pts[i+1].x)/2;
+      const my=(pts[i].y+pts[i+1].y)/2;
+      ctx.quadraticCurveTo(pts[i].x,pts[i].y,mx,my);
+    }
+    ctx.quadraticCurveTo(pts[pts.length-2].x,pts[pts.length-2].y,pts[pts.length-1].x,pts[pts.length-1].y);
+    const gc=getColor();
+    ctx.strokeStyle=gc+'0.35)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // ligne secondaire décalée
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y+12);
+    for(let i=1;i<pts.length-1;i++){
+      const mx=(pts[i].x+pts[i+1].x)/2;
+      const my=(pts[i].y+pts[i+1].y)/2+8;
+      ctx.quadraticCurveTo(pts[i].x,pts[i].y+8,mx,my);
+    }
+    ctx.strokeStyle=gc+'0.12)';
+    ctx.lineWidth=1;
+    ctx.stroke();
+
+    // points de données
+    pts.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+      ctx.fillStyle=gc+'0.5)';
+      ctx.fill();
+    });
+
+    // lignes verticales de grille légères
+    for(let i=0;i<pts.length;i++){
+      ctx.beginPath();
+      ctx.moveTo(pts[i].x,0);
+      ctx.lineTo(pts[i].x,H);
+      ctx.strokeStyle=gc+'0.05)';
+      ctx.lineWidth=1;
+      ctx.stroke();
+    }
+
+    anim=requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize',()=>{cancelAnimationFrame(anim);resize();draw()});
+  resize();draw();
+})();
 </script>
-
 </body>
 </html>
