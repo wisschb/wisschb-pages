@@ -32,55 +32,24 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--acc)}
 
 /* ══════════════════════════════
-   TOGGLE PILL — LAMPE CORDON (style A) avec icônes (style B)
+   TOGGLE PILL — LAMPE CORDON, ICÔNE LUNE UNIQUE
    Fixé en haut à gauche, sous la nav
 ══════════════════════════════ */
 .lamp-wrap{
-  position:fixed;top:0;left:40px;z-index:200;
-  display:flex;flex-direction:column;align-items:center;
+  position:fixed;top:14px;left:40px;z-index:200;
   cursor:pointer;user-select:none;
 }
-.lamp-cord{
-  width:1.5px;height:52px;
-  background:linear-gradient(to bottom,transparent,var(--border2));
-  transition:background .35s;
-}
-.lamp-head{
+.lamp-moon{
+  width:34px;height:34px;border-radius:50%;
+  border:1.5px solid var(--border2);
   background:var(--card);
-  border:1px solid var(--border);
-  border-top:none;
-  border-radius:0 0 20px 20px;
-  padding:8px 10px 12px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  box-shadow:0 4px 16px rgba(0,0,0,.08);
-  transition:all .35s;
-}
-[data-theme="dark"] .lamp-head{
-  box-shadow:0 4px 24px rgba(45,212,191,.12);
-}
-.lamp-head:hover{transform:translateY(4px)}
-.lamp-sun,.lamp-moon{
-  width:28px;height:28px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   transition:all .35s;
 }
-.lamp-sun{background:transparent}
-.lamp-moon{background:transparent}
-[data-theme="light"] .lamp-sun{background:var(--acc);box-shadow:0 0 10px rgba(13,148,136,.4)}
-[data-theme="dark"] .lamp-moon{background:var(--acc);box-shadow:0 0 14px rgba(45,212,191,.5)}
-[data-theme="dark"] .lamp-head svg.moon-icon path{stroke:white}
-.lamp-head svg{width:14px;height:14px;stroke:var(--faint);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s}
-[data-theme="light"] .lamp-sun svg{stroke:white}
-.bulb-glow{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--faint);
-  transition:all .35s;
-  margin-top:2px;
-}
-[data-theme="dark"] .bulb-glow{
-  background:#fde68a;
-  box-shadow:0 0 10px #fde68a,0 0 20px rgba(253,230,138,.4);
-}
+.lamp-moon svg{width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:all .35s}
+.lamp-moon:hover{transform:scale(1.08)}
+[data-theme="dark"] .lamp-moon{background:var(--acc);border-color:var(--acc);box-shadow:0 0 14px rgba(45,212,191,.5)}
+[data-theme="dark"] .lamp-moon svg{stroke:white;fill:white}
 
 /* ══════════════════════════════ NAV */
 nav{
@@ -290,19 +259,10 @@ footer{
 </head>
 <body>
 
-<!-- ══ LAMPE CORDON + TOGGLE ICÔNES ══ -->
+<!-- ══ BOUTON LUNE — bascule clair/sombre ══ -->
 <div class="lamp-wrap" onclick="toggleTheme()" title="Changer le thème">
-  <div class="lamp-cord"></div>
-  <div class="lamp-head">
-    <div class="lamp-sun">
-      <!-- soleil -->
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </div>
-    <div class="lamp-moon">
-      <!-- lune -->
-      <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="bulb-glow"></div>
+  <div class="lamp-moon">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
 </div>
 
@@ -639,7 +599,3 @@ document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
-
-
-
-
